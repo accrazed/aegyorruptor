@@ -15,7 +15,7 @@ fn main() {
     let args = Args::parse();
 
     match args.parser.as_str() {
-        "mark1" => print!("{}", Aegyorruptor.parse(args.input)),
+        "mark1" => print!("{}", Aegyorruptor::new().parse(args.input)),
         _ => return,
     }
 }

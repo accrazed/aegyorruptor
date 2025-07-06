@@ -1,6 +1,5 @@
-use std::ops::Index;
-
-use rand::prelude::*;
+use rand::Rng;
+use rand::rngs::ThreadRng;
 use rand::seq::IndexedRandom;
 
 const CORRUPTION: &[char] = &[
@@ -8,10 +7,16 @@ const CORRUPTION: &[char] = &[
 ];
 
 #[derive(Debug)]
-pub struct Aegyorruptor;
+pub struct Aegyorruptor {
+    rand: ThreadRng,
+}
 
 impl Aegyorruptor {
-    pub fn parse(&self, input: String) -> String {
+    pub fn new() -> Self {
+        Aegyorruptor { rand: rand::rng() }
+    }
+
+    pub fn parse(&mut self, input: String) -> String {
         let mut res = String::new();
 
         let mut cc = input.chars();
@@ -38,14 +43,12 @@ impl Aegyorruptor {
         res
     }
 
-    fn corrupt_replace(&self, input: String, strength: u32) -> String {
-        let mut rng = rand::rng();
-
+    fn corrupt_replace(&mut self, input: String, strength: u32) -> String {
         let mut res = String::new();
 
         for c in input.chars() {
-            match rng.random::<u32>() % strength {
-                0 => res.push(*CORRUPTION.choose(&mut rng).unwrap()),
+            match self.rand.random::<u32>() % strength {
+                0 => res.push(*CORRUPTION.choose(&mut self.rand).unwrap()),
                 _ => res.push(c),
             }
         }
@@ -53,17 +56,17 @@ impl Aegyorruptor {
         res
     }
 
-    fn corrupt_insert(&self, input: String, len: u32) -> String {
-        let mut rng = rand::rng();
-
+    fn corrupt_insert(&mut self, input: String, len: u32) -> String {
         let mut res = input.clone();
 
-        let ch_idx: Vec<usize> = input.char_indices().map(|(i, _)| i).collect();
-
-        let pos = *ch_idx.index(rng.random::<u32>() as usize % res.chars().count());
+        let pos = input
+            .char_indices()
+            .map(|(i, _)| i)
+            .nth(self.rand.random_range(..res.chars().count()))
+            .unwrap();
 
         for _ in 0..len {
-            res.insert(pos, *CORRUPTION.choose(&mut rng).unwrap());
+            res.insert(pos, *CORRUPTION.choose(&mut self.rand).unwrap());
         }
 
         res

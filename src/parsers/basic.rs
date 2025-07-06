@@ -58,14 +58,9 @@ impl Aegyorruptor {
 
         let mut res = input.clone();
 
-        println!("res: {}", res);
-
         let ch_idx: Vec<usize> = input.char_indices().map(|(i, _)| i).collect();
 
         let pos = *ch_idx.index(rng.random::<u32>() as usize % res.chars().count());
-
-        println!("pos: {}", pos);
-        println!("len: {}", len);
 
         for _ in 0..len {
             res.insert(pos, *CORRUPTION.choose(&mut rng).unwrap());

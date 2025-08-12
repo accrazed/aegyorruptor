@@ -1,10 +1,7 @@
+use crate::corruption::CORRUPTION;
 use rand::Rng;
 use rand::rngs::ThreadRng;
 use rand::seq::IndexedRandom;
-
-const CORRUPTION: &[char] = &[
-    '|', ':', '/', '?', '&', 'ᴗ', 'x', '◕', '.', '@', '#', '✿', '$', '%', '^', '*',
-];
 
 #[derive(Debug)]
 pub struct Aegyorruptor {

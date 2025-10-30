@@ -20,8 +20,8 @@ impl Aegyorruptor {
         while let Some(c) = cc.next() {
             res = match c {
                 'b' => format!("૮{}ა", res),
-                'c' => self.corrupt_insert(res, cc.next().unwrap_or('0').to_digit(10).unwrap()),
-                'C' => self.corrupt_replace(res, cc.next().unwrap_or('0').to_digit(10).unwrap()),
+                'c' => self.corrupt_ins(res, cc.next().unwrap_or('0').to_digit(10).unwrap_or(1)),
+                'C' => self.corrupt_repl(res, cc.next().unwrap_or('0').to_digit(10).unwrap_or(1)),
                 'd' => format!("{}▿", res),
                 'e' => format!("◕{}&", res),
                 'f' => format!("{}✿", res),
@@ -33,7 +33,9 @@ impl Aegyorruptor {
                 'p' => format!("({})", res),
                 's' => format!("{}ᴗ", res),
                 't' => format!("₍{}₎", res),
-                'u' => format!("◡{}◡✿", res),
+                'u' => format!("◡{}◡", res),
+                'w' => format!("{}﹏", res),
+                'x' => format!("ﾒ{}ﾒ", res),
                 _ => format!("{}{}", res, c),
             }
         }
@@ -42,7 +44,7 @@ impl Aegyorruptor {
     }
 
     // corrupt_replace randomly replaces emoticon characters in-place with corrupted bytes
-    fn corrupt_replace(&mut self, input: String, strength: u32) -> String {
+    fn corrupt_repl(&mut self, input: String, strength: u32) -> String {
         let mut res = String::new();
 
         for c in input.chars() {
@@ -56,7 +58,7 @@ impl Aegyorruptor {
     }
 
     // corrupt_insert inserts a block of corrupted bytes into a random index of the emoticon
-    fn corrupt_insert(&mut self, input: String, len: u32) -> String {
+    fn corrupt_ins(&mut self, input: String, len: u32) -> String {
         let mut res = input.clone();
 
         let pos = input

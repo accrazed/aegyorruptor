@@ -32,6 +32,7 @@ impl Aegyorruptor {
                 'o' => format!("{}.", res),
                 'p' => format!("({})", res),
                 's' => format!("{}ᴗ", res),
+                'S' => format!("{}︿", res),
                 't' => format!("₍{}₎", res),
                 'u' => format!("◡{}◡", res),
                 'w' => format!("{}﹏", res),
